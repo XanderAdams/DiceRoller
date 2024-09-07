@@ -58,7 +58,7 @@ public class DiceRoller : MonoBehaviour
     }
 
     //Rolls dice and returns only highest value
-    public void RollAdvantage(int sides)
+    public int RollAdvantage(int sides)
     {
         int roll1 = RollDie(sides);
         int roll2 = RollDie(sides);
@@ -68,10 +68,12 @@ public class DiceRoller : MonoBehaviour
         if (roll1 > roll2)
         {
             Debug.Log(roll1);
+            return roll1;
         }
         else
         {
             Debug.Log(roll2);
+            return roll2;
         }
     }
     //Sums the values of RollDice

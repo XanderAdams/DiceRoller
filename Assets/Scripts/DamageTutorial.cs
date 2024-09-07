@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Health : MonoBehaviour
+public class DamageTutorial : MonoBehaviour
 {
-    public int maxHealth = 30;
-    public int health;
-    public int damage;
+    int health = 1000;
+    int damage = 5;
+    int str = 3;
     DiceRoller sn;
-
+    
     // Start is called before the first frame update
     void Start()
     {
-        health = maxHealth;
         sn = gameObject.GetComponent<DiceRoller>();
     }
 
@@ -29,21 +28,9 @@ public class Health : MonoBehaviour
         }
     }
 
-    //Reset health to maxHealth
-    public void ResetHealth()
+    void Damage(int damage)
     {
-        health = maxHealth;
-        Debug.Log("Current health: " + health);
-    }
-
-    //Deal standard damage to health using RollDie
-    public void StandardDamage()
-    {
-        damage = 0;
-        
-        damage = sn.RollDie(sn.sideCount);
-
-        health = health-damage;
+        health -= damage;
 
         if(health>0)
         {
@@ -54,25 +41,36 @@ public class Health : MonoBehaviour
             Debug.Log("You died! Starting over...");
             ResetHealth();
         }
+    }
+
+     public void StandardDamage()
+    {
+        Damage(sn.RollDie(sn.sideCount));
+        
     }
 
     //Deal critical damage to health using RollAdvantage
     public void CriticalDamage()
-    {
-        damage = 0;
-       
+    {       
         damage = sn.RollAdvantage(sn.sideCount);
         
-        health = health-damage;
+        Damage(damage);
         
-        if(health>0)
-        {
-            Debug.Log("Took " + damage + " damage!\n" + health + " HP remaining");
-        }
-        else
-        {
-            Debug.Log("You died! Starting over...");
-            ResetHealth();
-        }
+    }
+
+    public void BasicAttack()
+    {
+        Damage(damage);
+    }
+
+    public void GoodAttack()
+    {
+        Damage(damage+str);
+    }
+
+    public void ResetHealth()
+    {
+        health = 1000;
+        Debug.Log("Current health: " + health);
     }
 }
