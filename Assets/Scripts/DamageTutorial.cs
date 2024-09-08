@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class DamageTutorial : MonoBehaviour
 {
-    int health = 1000;
     int damage = 5;
-    int str = 3;
-    DiceRoller sn;
+    DiceRoller diceRoller;
+    PlayerData health;
     
     // Start is called before the first frame update
     void Start()
     {
-        sn = gameObject.GetComponent<DiceRoller>();
+        diceRoller = gameObject.GetComponent<DiceRoller>();
+        health = gameObject.GetComponent<PlayerData>();
     }
 
     // Update is called once per frame
@@ -30,47 +30,36 @@ public class DamageTutorial : MonoBehaviour
 
     void Damage(int damage)
     {
-        health -= damage;
-
-        if(health>0)
-        {
-            Debug.Log("Took " + damage + " damage!\n" + health + " HP remaining");
-        }
-        else
-        {
-            Debug.Log("You died! Starting over...");
-            ResetHealth();
-        }
+        health.currentHealth -= damage;
     }
 
      public void StandardDamage()
     {
-        Damage(sn.RollDie(sn.sideCount));
-        
+        Damage(diceRoller.RollDie(diceRoller.sideCount));
+        if(health.currentHealth>0)
+        {
+            Debug.Log("Took " + damage + " damage!\n" + health.currentHealth + " HP remaining");
+        }
+        else
+        {
+            Debug.Log("You died! Starting over...");
+            health.ResetHealth();
+        }
     }
 
-    //Deal critical damage to health using RollAdvantage
+    //Deal critical damage to health using RollCritical
     public void CriticalDamage()
     {       
-        damage = sn.RollAdvantage(sn.sideCount);
-        
+        damage = diceRoller.RollCritical(diceRoller.sideCount);
         Damage(damage);
-        
-    }
-
-    public void BasicAttack()
-    {
-        Damage(damage);
-    }
-
-    public void GoodAttack()
-    {
-        Damage(damage+str);
-    }
-
-    public void ResetHealth()
-    {
-        health = 1000;
-        Debug.Log("Current health: " + health);
+        if(health.currentHealth>0)
+        {
+            Debug.Log("Critical hit! Took " + damage + " damage!\n" + health.currentHealth + " HP remaining");
+        }
+        else
+        {
+            Debug.Log("You died! Starting over...");
+            health.ResetHealth();
+        }
     }
 }

@@ -22,6 +22,10 @@ public class DiceRoller : MonoBehaviour
         {
             RollAdvantage(sideCount);
         }
+        if (Input.GetKeyDown("p"))
+        {
+            RollCritical(sideCount);
+        }
     }
 
     //Dice Roller
@@ -77,7 +81,12 @@ public class DiceRoller : MonoBehaviour
         }
     }
     //Sums the values of RollDice
-
+    public int RollCritical(int sides)  
+    {
+        int result;
+        result = sides + Random.Range(1, sides+1);
+        return result;
+    }
     public void PrintList(List<int> values)
     {
         string output = "[";
